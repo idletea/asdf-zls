@@ -2,8 +2,7 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for zls.
-GH_REPO="https://github.com/idletea/asdf-zls"
+GH_REPO="https://github.com/zigtools/zls"
 TOOL_NAME="zls"
 TOOL_TEST="zls --version"
 
@@ -37,12 +36,13 @@ list_all_versions() {
 }
 
 download_release() {
-	local version filename url
+	local version filename arch os url
 	version="$1"
 	filename="$2"
+	arch="$(uname -m)"
+	os="$(uname | awk '{print tolower($0)}')"
 
-	# TODO: Adapt the release URL convention for zls
-	url="$GH_REPO/archive/v${version}.tar.gz"
+	url="$GH_REPO/releases/download/${version}/zls-${arch}-${os}.tar.gz"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
